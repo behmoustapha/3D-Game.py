@@ -10,7 +10,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("GTA VI 2")
 pygame.mouse.set_visible(True)
 pygame.event.set_grab(True)
-with open("map.json", "r") as file:
+with open("data.json", "r") as file:
     wmap = json.load(file)
 world_map = wmap
 with open("spawn.json", "r") as file:
