@@ -18,11 +18,28 @@ with open("spawn.json", "r") as file:
     sp = json.load(file)
 spawn = sp
 player_x, player_y = spawn
+with open("espawn.json", "r") as file:
+    esp = json.load(file)
+espawn = esp
+enemy_x, enemy_y = espawn
+
 player_angle = 0
 FOV = math.pi / 3
 num_rays = 160
 max_depth = 15
 clock = pygame.time.Clock()
+
+def draw_enemy():
+        dx = enemy_x - player_x
+        dy = enemy_y - player_y
+        distt = math.sqrt(dx**2 + dy**2)
+        enemy_angle = math.atan2(dy, dx)
+        relative_angle = enemy_angle - player_angle
+        print(distt, relative_angle)
+        if abs(relative_angle) < FOV / 2:
+            print("ENNEMI VISIBLE")
+        else:
+            print("ENNEMI HORS CHAMP")
 
 def respawning():
     font = pygame.font.SysFont("Times", 15, bold=True)
@@ -204,6 +221,7 @@ def play_game(events):
     win.fill((0,0,0))
     cast_rays()
     draw_crosshair()
+    draw_enemy()
     pygame.display.flip()
     clock.tick(60)
 
