@@ -10,6 +10,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("GTA VI 2")
 pygame.mouse.set_visible(True)
 pygame.event.set_grab(True)
+font = pygame.font.SysFont("Times", 15, bold=True)
 with open("data.json", "r") as file:
     wmap = json.load(file)
 world_map = wmap
@@ -80,8 +81,7 @@ def show_menu(events):
     game_state = "menu"
     pygame.mouse.set_visible(True)
     win.fill((255,255,255))
-    pos = pygame.mouse.get_pos()
-    texte = pygame.font.SysFont("arial", 15, bold=True) 
+    
     
     bouton_jeu = pygame.Rect(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50)
     bouton_opt = pygame.Rect(WIDTH//2 - 100, HEIGHT//2 + 10, 200, 50)
@@ -89,7 +89,6 @@ def show_menu(events):
 
     pygame.draw.rect(win, (0, 0, 0), bouton_jeu)
     pygame.draw.rect(win, (0, 0, 0), bouton_opt)
-    font = pygame.font.SysFont("Times", 15, bold=True)
     text_jouer = font.render("Jouer", True, (255, 255, 255))
     text_warning = font.render("Salut !", True, (0, 0, 0))
     text_options = font.render("Options", True, (255, 255, 255))
@@ -102,6 +101,7 @@ def show_menu(events):
 
     for e in pygame.event.get():
         if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+            pos = pygame.mouse.get_pos()
             if bouton_jeu.collidepoint(pos):
                 game_state = "jeu"
             elif bouton_opt.collidepoint(pos):
@@ -115,10 +115,21 @@ def show_options(events):
     global game_state
     global pose
     global keys
+    global win
+    global WIDTH
+    global HEIGHT
     game_state = "options"
     win.fill((255,255,255))
-    pose = pygame.mouse.get_pos()
+    fullscrn_btn = pygame.Rect(WIDTH//2 - 100, HEIGHT//2 - 60, 200, 50)
+    pygame.draw.rect(win, (0, 0, 0), fullscrn_btn)
+    text_fullscrn = font.render("Plein ecran", True, (255, 255, 255))
+    win.blit(text_fullscrn, (fullscrn_btn.x + 70, fullscrn_btn.y + 15))
+
     for e in pygame.event.get():
+        if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
+            pos = pygame.mouse.get_pos() 
+            if fullscrn_btn.collidepoint(pos):
+                win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             game_state = "menu"
