@@ -5,7 +5,7 @@ import json
 
 pygame.init()
 
-WIDTH, HEIGHT = 800, 400
+WIDTH, HEIGHT = 1440, 900
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("GTA VI 2")
 pygame.mouse.set_visible(True)
@@ -142,14 +142,18 @@ def show_options(events):
     text_fullscrn = font.render("Plein ecran", True, (255, 255, 255))
     win.blit(text_fullscrn, (fullscrn_btn.x + 70, fullscrn_btn.y + 15))
 
-    for e in pygame.event.get():
+    for e in events:
         if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             pos = pygame.mouse.get_pos() 
             if fullscrn_btn.collidepoint(pos):
-                win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
-            game_state = "menu"
+                if pygame.display.get_surface().get_flags() & pygame.FULLSCREEN:
+                    win = pygame.display.set_mode((WIDTH, HEIGHT))
+                else:
+                    win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+                    pygame.event.set_grab(True)
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_ESCAPE:
+                game_state = "menu"
     pygame.display.update()
 
 def play_game(events):
@@ -166,13 +170,13 @@ def play_game(events):
         if e.type == pygame.QUIT:
             game_over = True
             return
-    
-        keys = pygame.key.get_pressed()
-        
-        # Movement
-        cos_a = math.cos(player_angle)
-        sin_a = math.sin(player_angle)
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_ESCAPE:
+                game_state = "menu"
+                pygame.event.set_grab(False)
+                pygame.mouse.set_visible(True)
 
+    keys = pygame.key.get_pressed()
     if keys[pygame.K_z]:    
             newx = player_x + math.cos(player_angle) * 0.05
             newy = player_y + math.sin(player_angle) * 0.05
@@ -209,10 +213,7 @@ def play_game(events):
                 player_y += math.cos(player_angle) * 0.025
             else:
                 pass
-    if keys[pygame.K_ESCAPE]:
-        game_state = "menu"
-        pygame.event.set_grab(False)
-        pygame.mouse.set_visible(True)
+    
 
     # Mouse movement
     dx, dy = pygame.mouse.get_rel()
