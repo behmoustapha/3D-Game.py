@@ -29,6 +29,12 @@ num_rays = 160
 max_depth = 15
 clock = pygame.time.Clock()
 
+player_health = 100
+
+def check_health(health):
+    if health <= 0:
+        game_over = True
+
 def draw_enemy():
         dx = enemy_x - player_x
         dy = enemy_y - player_y
@@ -218,9 +224,9 @@ def play_game(events):
     # Mouse movement
     dx, dy = pygame.mouse.get_rel()
     player_angle += dx * 0.002
-    image = pygame.image.load(/home/moustapha/Documents/3D-Game.py/meme.png).convert()
-
-    win.fill((image))
+    
+    win.fill((0,0,0))
+    
     cast_rays()
     draw_crosshair()
     draw_enemy()
@@ -229,6 +235,7 @@ def play_game(events):
 
 game_state = "menu"
 game_over = False
+image = pygame.image.load("../files/sprite_1.png").convert_alpha()
 while not game_over:
     events = pygame.event.get()
     for e in events:
@@ -240,5 +247,7 @@ while not game_over:
         show_options(events)
     elif game_state == "jeu":
         play_game(events)
+        win.blit(image, (1000, 600))
+        pygame.display.update()
 pygame.quit()
 quit()
