@@ -218,8 +218,9 @@ def play_game(events):
     # Mouse movement
     dx, dy = pygame.mouse.get_rel()
     player_angle += dx * 0.002
+    image = pygame.image.load(/home/moustapha/Documents/3D-Game.py/meme.png).convert()
 
-    win.fill((0,0,0))
+    win.fill((image))
     cast_rays()
     draw_crosshair()
     draw_enemy()
