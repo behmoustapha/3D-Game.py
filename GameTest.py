@@ -154,6 +154,7 @@ def show_options(events):
             if fullscrn_btn.collidepoint(pos):
                 if pygame.display.get_surface().get_flags() & pygame.FULLSCREEN:
                     win = pygame.display.set_mode((WIDTH, HEIGHT))
+                    pygame.event.set_grab(True)
                 else:
                     win = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
                     pygame.event.set_grab(True)
@@ -226,6 +227,7 @@ def play_game(events):
     player_angle += dx * 0.002
     
     win.fill((0,0,0))
+    #win.blit(image, (1000, 600))
     
     cast_rays()
     draw_crosshair()
@@ -235,7 +237,7 @@ def play_game(events):
 
 game_state = "menu"
 game_over = False
-image = pygame.image.load("../files/sprite_1.png").convert_alpha()
+image = pygame.image.load("files/sprite_1.png").convert_alpha()
 while not game_over:
     events = pygame.event.get()
     for e in events:
@@ -247,7 +249,6 @@ while not game_over:
         show_options(events)
     elif game_state == "jeu":
         play_game(events)
-        win.blit(image, (1000, 600))
         pygame.display.update()
 pygame.quit()
 quit()
